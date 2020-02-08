@@ -141,17 +141,6 @@ describe('AppComponent', () => {
       expect(password.hasError('containLowerCase')).toBeTruthy();
     });
 
-    xit('should require the password to not contain first or last name', () => {
-
-      firstname.setValue('amr')
-      lastname.setValue('bla')
-
-      password.setValue(`12345${lastname.value}`);
-
-      expect(password.hasError('passwordIncludeName')).toBeTruthy();
-
-    });
-
 
     it('should require the password to be equal to confirm password field', () => {
       password.setValue('Aa123456');
