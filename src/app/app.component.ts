@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { passwordIncludeName, MustMatch, CustomValidators } from './helpers/Password-validator';
 import { User } from './types/user.interface';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -49,7 +50,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onSubmitForm(user: Partial<User>): Observable<any> { // type is Partial user as we don't need to POST all the user object;
+  onSubmitForm(user: Partial<User>): Observable<User> { // type is Partial user as we don't need to POST all the user object;
     this.submitted = true;
     if (this.signUpForm.invalid) {
       return;
@@ -62,14 +63,17 @@ export class AppComponent implements OnInit {
     formData.append('lastName', lastName)
     formData.append('email:', email)
 
-    this.httpClient.post<any>(this.SERVER_URL, formData).subscribe(
-      (res) => console.log(res),
-      (err) => console.log(err)
-    );
+    let options = {
+      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+    };
+
+    this.httpClient
+      .post<User>(this.SERVER_URL, formData, options)
+      .subscribe(
+        () => alert('Form has been submitted '),
+        (err) => console.log(err)
+      );
+    this.signUpForm.reset();
 
   }
-
-
-
-
 }
