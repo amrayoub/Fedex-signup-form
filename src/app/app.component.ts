@@ -4,6 +4,7 @@ import { passwordIncludeName, MustMatch, CustomValidators } from './helpers/Pass
 import { User } from './types/user.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -69,11 +70,13 @@ export class AppComponent implements OnInit {
 
     this.httpClient
       .post<User>(this.SERVER_URL, formData, options)
+      .pipe(
+        tap(() => alert('Form has been submitted')),
+        tap(() => this.signUpForm.reset())
+      )
       .subscribe(
-        () => alert('Form has been submitted '),
-        (err) => alert(`Error has been occured ${err}`)
-      ).add(() => { //Called when operation is complete (both success and error)
-        this.signUpForm.reset();
-      })
+        (res) => console.log(res),
+        (err) => console.log(err)
+      )
   }
 }
