@@ -71,9 +71,9 @@ export class AppComponent implements OnInit {
       .post<User>(this.SERVER_URL, formData, options)
       .subscribe(
         () => alert('Form has been submitted '),
-        (err) => console.log(err)
-      );
-    this.signUpForm.reset();
-
+        (err) => alert(`Error has been occured ${err}`)
+      ).add(() => { //Called when operation is complete (both success and error)
+        this.signUpForm.reset();
+      })
   }
 }
